@@ -15,14 +15,15 @@ MainWindow::MainWindow(QWidget *parent) :
     tc = 0;
     childWindow = new ChildWindow(ui->mdiArea, this);
     childWindow->setAttribute(Qt::WA_DeleteOnClose);
-    childWindow->setFixedHeight(200);
-    childWindow->setFixedWidth(200);
+    childWindow->setFixedHeight(250);
+    childWindow->setFixedWidth(250);
+    childWindow->setWindowFlags(Qt::FramelessWindowHint);
     childWindow->showMaximized();
 
     connect(ui->clear_button, SIGNAL(clicked()),
             childWindow, SLOT(clearImage()));
 
-    //n = network();
+    n = network();
 }
 
 MainWindow::~MainWindow()
@@ -54,6 +55,7 @@ void MainWindow::on_pushButton_clicked()
 
     n.train(7, 7, 7, ui->path->text().toStdString());
     ui->pushButton->setDisabled(true);
+    ui->openButton_2->setDisabled(false);
 
 }
 
@@ -61,5 +63,7 @@ void MainWindow::on_openButton_2_clicked()
 {
     childWindow->saveImage(ui->path->text() + "predict.bmp", "bmp");
     childWindow->clearImage();
-    ui->ans->setText(QString::fromStdString(std::to_string(n.predict(ui->path->text().toStdString() + "predict.bmp"))));
+    QString prediction = QString::fromStdString(std::to_string(n.predict(ui->path->text().toStdString() + "predict.bmp")));
+    //if(prediction == "-1") prediction = "?";
+    ui->ans->setText(prediction);
 }

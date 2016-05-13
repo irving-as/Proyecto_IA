@@ -3,8 +3,6 @@
 
 #define NUMBER_OF_TRAINING_SAMPLES 5
 #define ATTRIBUTES_PER_SAMPLE 400
-#define NUMBER_OF_TESTING_SAMPLES 6
-
 #define NUMBER_OF_CLASSES 3
 
 network::network()
@@ -107,7 +105,7 @@ int network::predict(std::string path)
     temp2.convertTo(temp2, CV_32FC1);
     cv::Mat pred = cv::Mat(1, 3, CV_32FC1);
     net->predict(temp2, pred);
-
+    //if(pred.at<float>(0,0) < .5 && pred.at<float>(0,1) < .5 && pred.at<float>(0,0) < .5) return -1;
     if(pred.at<float>(0,0) > pred.at<float>(0,1))
     {
         if(pred.at<float>(0,0) > pred.at<float>(0,2)) return 0;
